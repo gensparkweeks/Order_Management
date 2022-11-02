@@ -4,6 +4,7 @@ import {FaStar} from 'react-icons/fa'
 import Global from './Global'
 import Loading from './Loading'
 import empty from '../statics/images/empty.png'
+import { useSearchParams } from 'react-router-dom';
 
 const ProductPick = () => {
 
@@ -11,6 +12,15 @@ const ProductPick = () => {
     const [status, setStatus] = useState(false)
 
     const {url, uploadPath} = Global;
+
+    const [searchParams, setSerachParams] = useSearchParams();
+    const filter = searchParams.get("filter") ?? "";
+
+    const handleFilter = (e)=>{
+        setSerachParams({
+            filter: e.target.value
+        })
+    }
 
     const getProducts = () => {
         axios.get(url + 'product')
@@ -24,19 +34,34 @@ const ProductPick = () => {
 
 
     if (products.length > 0){
+
+        var productsFiltered = 
+            products.filter(product =>{
+                if (!filter) {
+                    return true;
+                }else{
+                    return product.product.toLowerCase().includes(filter.toLowerCase());
+                }
+            })
+
         return (
             <div className='container'>
                 <h1>Our products</h1>
                 {/* <!-- Search form --> */}
                 <div className="md-form mt-0 col-4">
-                    <input className="form-control" type="text" placeholder="Search" aria-label="Search" />
+                    <input className="form-control" 
+                        type="text"   
+                        placeholder='filter'
+                        onChange={handleFilter}  
+                        value={filter} 
+                    />
                 </div>
                 
                 <section className='productpick'>
                     <div className="container py-5">
     
                     {
-                        products.map(product =>
+                        productsFiltered.map(product =>
 
                             <div className="row justify-content-center mb-3" key={product.id}>
                                 <div className="col-md-12 col-xl-10">
