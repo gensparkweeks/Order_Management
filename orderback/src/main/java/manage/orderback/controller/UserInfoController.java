@@ -23,6 +23,11 @@ public class UserInfoController {
         return userInfoService.findById(id);
     }
 
+    @GetMapping("/info/{id}")
+    public UserInfo findByUserId(@PathVariable int id){
+        return userInfoService.findByUserId(id);
+    }
+
     @PostMapping
     public UserInfo create(@RequestBody UserInfo userInfo){
         return userInfoService.create(userInfo);

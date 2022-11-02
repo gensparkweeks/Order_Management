@@ -9,4 +9,5 @@ public interface UserInfoService {
     UserInfo create(UserInfo userInfo);
     UserInfo update(UserInfo userInfo);
     void delete(int id);
+    UserInfo findByUserId(int id);
 }
